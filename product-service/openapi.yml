@@ -1,0 +1,39 @@
+openapi: 3.0.0
+components:
+  schemas: {}
+  securitySchemes: {}
+info:
+  title: My API
+  description: This is my API
+  version: '1'
+paths:
+  /products:
+    get:
+      operationId: getProductsList
+      summary: Get products list
+      description: 'Get full mocked products list '
+      responses:
+        '200':
+          description: Full list of products
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetProductsResponse'
+  '/product/{id}':
+    get:
+      operationId: getProductById
+      summary: Get product
+      description: Get product by id
+      responses:
+        '200':
+          description: A user object along with generated API Keys
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetProductsResponse'
+        '404':
+          description: Product not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundProductResponse'
