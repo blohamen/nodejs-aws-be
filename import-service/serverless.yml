@@ -16,6 +16,11 @@ provider:
         - "s3:*"
       Resource:
         - "arn:aws:s3:::import-service-bucket/*"
+    - Effect: "Allow"
+      Action: "sqs:*"
+      Resource:
+        - "arn:aws:sqs:eu-west-1:574986945474:catalogItemsQueue"
+
 custom:
   webpack:
     webpackConfig: ./webpack.config.js
@@ -25,6 +30,7 @@ custom:
 
 plugins:
   - serverless-webpack
+  - serverless-dotenv-plugin
 
 functions:
   importProductsFile:
