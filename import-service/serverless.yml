@@ -22,11 +22,24 @@ provider:
         - "arn:aws:sqs:eu-west-1:574986945474:catalogItemsQueue"
 
 custom:
+  authArn: ${cf:authorization-service-dev.authArn}
   webpack:
     webpackConfig: ./webpack.config.js
     includeModules:
       forceInclude:
         - csv-parser
+
+resources:
+  Resources:
+    GatewayResponseDefault4XX:
+      Type: 'AWS::ApiGateway::GatewayResponse'
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: DEFAULT_4XX
+        RestApiId:
+          Ref: 'ApiGatewayRestApi'
 
 plugins:
   - serverless-webpack
@@ -40,6 +53,12 @@ functions:
           path: import
           method: get
           cors: true
+          authorizer:
+            name: basicAuthorizer
+            arn: ${self:custom.authArn}
+            resultTtlInSeconds: 0
+            identitySource: method.request.header.Authorization
+            type: token
           request:
             parameters:
               querystrings:

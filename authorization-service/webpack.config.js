@@ -4,16 +4,12 @@ const nodeExternals = require("webpack-node-externals");
 module.exports = {
     entry: slsw.lib.entries,
     target: "node",
-    // Generate sourcemaps for proper error messages
-    // Since 'aws-sdk' is not compatible with webpack,
-    // we exclude all node dependencies
     externals: [nodeExternals()],
     mode: slsw.lib.webpack.isLocal ? "development" : "production",
     performance: {
         // Turn off size warnings for entry points
         hints: false
     },
-    // Run babel on all .js files and skip those in node_modules
     module: {
         rules: [
             {
